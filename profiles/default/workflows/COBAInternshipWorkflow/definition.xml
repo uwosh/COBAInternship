@@ -1,0 +1,983 @@
+<?xml version="1.0"?>
+<dc-workflow workflow_id="COBAInternshipWorkflow"
+             title="COBAInternshipWorkflow"
+             state_variable="review_state"
+             initial_state="private">
+             
+        
+        
+        
+        
+        
+  <!-- updated June 29 at 1:33pm -->      
+        
+        
+        
+        
+        
+        
+        
+  <!-- States:
+  
+  1) private
+  2) pendingCollegeApproval
+  3) shorcut
+  4) deniedByCollege
+  5) pendingSupervisorApproval
+  6) deniedBySupervisor
+  7) pendingCollegeReapproval
+  8) deniedByCollegeReapproval
+  9) approved
+  10) revoked
+  11) archived
+  
+  -->      
+                        
+             
+ <permission>Access contents information</permission>
+ <permission>Modify portal content</permission>
+ <permission>View</permission>
+ 
+ 
+ 
+ 
+
+  <state state_id="private"
+        title="Private">
+  <exit-transition transition_id="submit"/>
+  <exit-transition transition_id="archiveInternship"/>
+  
+ 
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>Owner</permission-role>
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>Owner</permission-role>
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+ 
+  <permission-map name="View"
+                  acquired="False">
+   <permission-role>Owner</permission-role>
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+  </permission-map>  
+ </state>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  <state state_id="pendingCollegeApproval"
+        title="Pending College Approval">
+  <exit-transition transition_id="submitFromPendingCollegeApproval"/>
+  <exit-transition transition_id="denyFromPendingCollegeApproval"/>
+  <exit-transition transition_id="sendToShortcut"/>
+  <exit-transition transition_id="archiveInternship"/>
+  <exit-transition transition_id="revokeInternship"/>
+  
+   
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+  </permission-map>
+  
+  
+  
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  
+  
+      <permission-map name="View"
+                  acquired="False">
+   <permission-role>Owner</permission-role>
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+  </permission-map>
+ </state>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  <state state_id="deniedByCollege"
+        title="Denied By College">
+  <exit-transition transition_id="submitFromDeniedByCollege"/>
+  <exit-transition transition_id="archiveInternship"/>
+  <exit-transition transition_id="revokeInternship"/>
+  
+  
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  
+    
+      <permission-map name="View"
+                  acquired="False">
+   <permission-role>Owner</permission-role>
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+  </permission-map>
+ </state>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  <state state_id="pendingSupervisorApproval"
+        title="Pending Supervisor Approval">
+  
+  <exit-transition transition_id="submitFromPendingSupervisorApproval"/>
+  <exit-transition transition_id="denyFromPendingSupervisorApproval"/>
+  <exit-transition transition_id="emailToSupervisorFromPendingSupervisorApproval"/>
+  <exit-transition transition_id="archiveInternship"/>
+  <exit-transition transition_id="revokeInternship"/>
+  
+
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+   <permission-role>ValidSupervisor</permission-role>
+  </permission-map>
+  
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>ValidSupervisor</permission-role>
+  </permission-map>
+  
+  
+    
+   <permission-map name="View"
+                  acquired="False">
+   <permission-role>Owner</permission-role>
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+   <permission-role>ValidSupervisor</permission-role>
+  </permission-map> 
+</state>
+ 
+ 
+
+
+ 
+
+ 
+  <state state_id="deniedBySupervisor"
+        title="Denied By Supervisor">
+  <exit-transition transition_id="submitFromDeniedBySupervisor"/>
+  <exit-transition transition_id="archiveInternship"/>
+  <exit-transition transition_id="revokeInternship"/>
+  
+  
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+   <permission-role>ValidSupervisor</permission-role>
+  </permission-map>
+
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  
+
+   <permission-map name="View"
+                  acquired="False">
+   <permission-role>Owner</permission-role>
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+   <permission-role>ValidSupervisor</permission-role>
+  </permission-map>
+ </state>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ <state state_id="pendingCollegeReapproval"
+        title="Pending College Re-Approval">
+  <exit-transition transition_id="backToPendingSupervisorApproval"/>
+  <exit-transition transition_id="denyFromPendingCollegeRepproval"/>
+  <exit-transition transition_id="archiveInternship"/>
+  <exit-transition transition_id="revokeInternship"/>
+
+  
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Enrollment</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  
+  
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+ 
+ 
+ 
+  <permission-map name="View"
+                  acquired="False">
+   <permission-role>Owner</permission-role>
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+  </permission-map>
+ </state>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  <state state_id="deniedByCollegeReapproval"
+        title="Denied By College Re-Approval">
+  <exit-transition transition_id="submitFromDeniedByCollegeReapproval"/>
+  <exit-transition transition_id="archiveInternship"/>
+  <exit-transition transition_id="revokeInternship"/>
+  
+  
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  
+    
+      <permission-map name="View"
+                  acquired="False">
+   <permission-role>Owner</permission-role>
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+  </permission-map>
+ </state>
+ 
+ 
+ 
+ 
+
+ 
+ 
+  <!--meaning completely approved by college and supervisor and internship is complete -->
+ <state state_id="approved"
+        title="Approved">
+  <exit-transition transition_id="revokeInternship"/>
+  <exit-transition transition_id="archiveInternship"/>
+
+  
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Enrollment</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>ValidSupervisor</permission-role>
+  </permission-map>
+  
+  
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+ 
+ 
+ 
+  <permission-map name="View"
+                  acquired="False">
+   <permission-role>Owner</permission-role>
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+   <permission-role>ValidSupervisor</permission-role>
+  </permission-map>
+ </state>
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ <state state_id="revoked"
+        title="Revoked">
+  <exit-transition transition_id="sendBackToPrivate"/>
+  <exit-transition transition_id="sendBackToPendingCollegeApproval"/>
+  <exit-transition transition_id="sendBackToDeniedByCollege"/>
+  <exit-transition transition_id="sendBackToPendingSupervisorApproval"/>
+  <exit-transition transition_id="sendBackToDeniedBySupervisor"/>
+  <exit-transition transition_id="sendBackToPendingCollegeReapproval"/>
+  <exit-transition transition_id="sendBackToDeniedByCollegeReapproval"/>
+  <exit-transition transition_id="sendBackToApproved"/>
+  <exit-transition transition_id="archiveInternship"/>
+  
+  
+ 
+  
+   
+  
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Enrollment</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  
+  
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+ 
+ 
+ 
+  <permission-map name="View"
+                  acquired="False">
+   <permission-role>Owner</permission-role>
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+  </permission-map>
+ </state>
+ 
+ 
+
+ 
+ 
+ 
+ 
+
+ 
+ 
+  <state state_id="archived"
+        title="Archived">
+  <exit-transition transition_id="sendBackToPrivate"/>
+  <exit-transition transition_id="sendBackToPendingCollegeApproval"/>
+  <exit-transition transition_id="sendBackToDeniedByCollege"/>
+  <exit-transition transition_id="sendBackToPendingSupervisorApproval"/>
+  <exit-transition transition_id="sendBackToDeniedBySupervisor"/>
+  <exit-transition transition_id="sendBackToPendingCollegeReapproval"/>
+  <exit-transition transition_id="sendBackToDeniedByCollegeReapproval"/>
+  <exit-transition transition_id="sendBackToApproved"/>
+  <exit-transition transition_id="sendBackToRevoked"/>
+
+  
+  
+  
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Enrollment</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  
+  
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+ 
+ 
+ 
+  <permission-map name="View"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+  </permission-map>
+ </state>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  <state state_id="shortcut"
+        title="Shortcut">
+  <exit-transition transition_id="sendBackToPendingCollegeApproval"/>
+  <exit-transition transition_id="submitFromPendingSupervisorApproval"/>
+
+
+  
+  
+  
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Enrollment</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  
+  
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+ 
+ 
+ 
+  <permission-map name="View"
+                  acquired="False">
+   <permission-role>InternshipDirector</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Enrollment</permission-role>
+  </permission-map>
+ </state>
+ 
+
+  
+  
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ <!-- Transition(s) that send internships back to original states after being revoked or archived -->
+ <!-- These transitions have no emails -->
+
+ 
+ 
+ 
+ 
+  <transition transition_id="sendBackToPrivate"
+             title="Back to Private"
+             new_state="private"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Back to Private</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+
+ 
+ <transition transition_id="sendBackToPendingCollegeApproval"
+             title="Back to Pending College Approval"
+             new_state="pendingCollegeApproval"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Back to Pending College Approval</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+
+
+<transition transition_id="sendBackToDeniedByCollege"
+             title="Back to Denied By College"
+             new_state="deniedByCollege"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Back to Denied by College</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+<transition transition_id="sendBackToPendingSupervisorApproval"
+             title="Back to Pending Supervisor Approval"
+             new_state="pendingSupervisorApproval"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Back to Pending Supervisor Approval</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition> 
+ 
+ 
+ 
+ <transition transition_id="sendBackToDeniedBySupervisor"
+             title="Back to Denied By Supervisor"
+             new_state="deniedBySupervisor"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Back to Denied By Supervisor</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+ 
+ <transition transition_id="sendBackToPendingCollegeReapproval"
+             title="Back to Pending College Re-Approval"
+             new_state="pendingCollegeReapproval"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Back to Pending College Re-Approval</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+ 
+ <transition transition_id="sendBackToDeniedByCollegeReapproval"
+             title="Back to Denied By College Re-Approval"
+             new_state="deniedByCollegeReapproval"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Back to Denied By College Re-Approval</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+ 
+ 
+ <transition transition_id="sendBackToApproved"
+             title="Back to Approved"
+             new_state="approved"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Back to Approved</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+ 
+ <transition transition_id="sendBackToRevoked"
+             title="Back to Revoked"
+             new_state="revoked"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Back to Revoked</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+ 
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+<!-- Transition(s) with Emails -->
+
+ 
+ 
+  <transition transition_id="submit"
+             title="Submit"				
+             new_state="pendingCollegeApproval"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Submit</action>
+  <guard>
+	<guard-role>Member</guard-role>
+	<guard-role>Owner</guard-role>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+ 
+ <transition transition_id="denyFromPendingCollegeApproval"
+             title="denyFromPendingCollegeApproval"
+             new_state="deniedByCollege"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Deny by College</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+ 
+ <transition transition_id="submitFromDeniedByCollege"
+             title="submitFromDeniedByCollege"
+             new_state="pendingCollegeApproval"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Submit Again for Approval from College</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Owner</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+ 
+ <transition transition_id="submitFromPendingCollegeApproval"
+             title="submitFromPendingCollegeApproval"			
+             new_state="pendingSupervisorApproval"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">College Approve</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+ 
+ <transition transition_id="denyFromPendingSupervisorApproval"
+             title="denyFromPendingSupervisorApproval"
+             new_state="deniedBySupervisor"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Deny by Supervisor</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Supervisor</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+ 
+ <transition transition_id="submitFromDeniedBySupervisor"
+             title="submitFromDeniedBySupervisor"
+             new_state="pendingCollegeReapproval"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Submit Again for Approval by the College of Business</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Owner</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+ 
+ <transition transition_id="denyFromPendingCollegeRepproval"
+             title="Deny by College Re-Approval"
+             new_state="deniedByCollegeReapproval"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Deny By College Re-Approval</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+ 
+ <transition transition_id="submitFromDeniedByCollegeReapproval"
+             title="Submit for College Re-Approval"
+             new_state="pendingCollegeReapproval"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Submit for College Re-Approval</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+	<guard-role>Owner</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+
+ <transition transition_id="backToPendingSupervisorApproval"
+             title="Re-Approve and Send to Supervisor"
+             new_state="pendingSupervisorApproval"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Re-Approve and Send to Supervisor</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+
+ <transition transition_id="emailToSupervisorFromPendingSupervisorApproval"
+             title="emailToSupervisorFromPendingSupervisorApproval"
+             new_state="pendingSupervisorApproval"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Send Second Notification Email to Supervisor</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+  
+
+ 
+  <transition transition_id="submitFromPendingSupervisorApproval"
+             title="submitFromPendingSupervisorApproval"
+             new_state="approved"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Approve by Supervisor</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Supervisor</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+ 
+ <transition transition_id="revokeInternship"
+             title="Revoke Internship"
+             new_state="revoked"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Revoke Internship</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ <!-- Transition(s) without an Email -->
+
+
+  <transition transition_id="archiveInternship"
+             title="Archive Internship"
+             new_state="archived"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Archive the Internship</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ 
+
+
+
+  <transition transition_id="sendToShortcut"
+             title="Send the internship to the Shortcut State"
+             new_state="shortcut"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <action url="" category="workflow">Send the internship to the Shortcut State</action>
+  <guard>
+	<guard-role>InternshipDirector</guard-role>
+	<guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+  
+ 
+ 
+ 
+ 
+ 
+ <!-- Variables -->
+ 
+ 
+ <variable variable_id="action" for_catalog="False"
+           for_status="True" update_always="True">
+  <description>The last transition</description>
+  <default>
+   <expression>transition/getId|nothing</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ 
+ 
+ 
+ 
+ 
+ <variable variable_id="actor" for_catalog="False"
+           for_status="True" update_always="True">
+  <description>The ID of the user who performed the last transition</description>
+  <default>
+   <expression>user/getId</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ 
+ 
+ 
+ 
+ 
+ <variable variable_id="comments" for_catalog="False"
+           for_status="True" update_always="True">
+  <description>Comments about the last transition</description>
+  <default>
+   <expression>python:state_change.kwargs.get('comment', '')</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ 
+ 
+ 
+ 
+ 
+ <variable variable_id="review_history" for_catalog="False"
+           for_status="False" update_always="False">
+  <description>Provides access to workflow history</description>
+  <default>
+   <expression>state_change/getHistory</expression>
+  </default>
+  <guard>
+   <guard-permission>Request review</guard-permission>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </variable>
+ 
+ 
+ 
+ 
+ 
+ <variable variable_id="time" for_catalog="False"
+           for_status="True" update_always="True">
+  <description>Time of the last transition</description>
+  <default>
+   <expression>state_change/getDateTime</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ 
+ 
+ 
+ 
+ <!-- We dont use workflow scripts any more, we use subscribers -->
+</dc-workflow>

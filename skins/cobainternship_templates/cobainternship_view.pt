@@ -1,0 +1,692 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+
+
+
+<!-- updated Sept 17 2009 at 10:25am -->
+
+
+  <head><title></title></head>
+
+
+  <metal:javascript_head fill-slot="javascript_head_slot">
+    <tal:block define="macro here/archetypes_custom_js/macros/javascript_head | nothing"
+               condition="macro">
+      <metal:block use-macro="macro" />
+    </tal:block>
+    <tal:comment replace="nothing">
+      Many of the following defines duplicated from the tal:defines in the
+      main slot. With base_edit, edit_macros could be reused as it was defined
+      for the entire document. base_view uses main_template and thus must
+      create additional defines for each slot it fills.
+    </tal:comment>
+    <tal:js define="fields python:here.Schema().viewableFields(here);
+                    js python:here.getUniqueWidgetAttr(fields, 'helper_js')"
+            condition="js"
+            repeat="item js">
+      <script type="text/javascript"
+              charset="iso-8859-1"
+              tal:condition="python:exists('portal/%s' % item)"
+              tal:attributes="src string:$portal_url/$item">
+      </script>
+    </tal:js>
+    <tal:block define="portal_type python:here.getPortalTypeName().lower().replace(' ', '_');
+                       view_template python:'%s_view' % portal_type;
+                       view_macros python:path('here/%s/macros|nothing' % view_template);
+                       macro view_macros/js | nothing"
+               condition="macro">
+      <metal:block use-macro="macro" />
+    </tal:block>
+  </metal:javascript_head>
+
+  <metal:css fill-slot="css_slot">
+    <tal:comment replace="nothing">
+      Many of the following defines duplicated from the tal:defines in the
+      main slot. With base_edit, edit_macros could be reused as it was defined
+      for the entire document. base_view uses main_template and thus must
+      create additional defines for each slot it fills.
+    </tal:comment>
+    <tal:css define="fields python:here.Schema().viewableFields(here);
+                     css python:here.getUniqueWidgetAttr(fields, 'helper_css')"
+             condition="css"
+             repeat="item css">
+      <style type="text/css"
+             media="all"
+             tal:condition="python:exists('portal/%s' % item)"
+             tal:content="structure string:<!-- @import url($portal_url/$item); -->">
+      </style>
+    </tal:css>
+    <tal:block define="portal_type python:here.getPortalTypeName().lower().replace(' ', '_');
+                       view_template python:'%s_view' % portal_type;
+                       view_macros python:path('here/%s/macros|nothing' % view_template);
+                       macro view_macros/css | nothing"
+               condition="macro">
+      <metal:block use-macro="macro" />
+    </tal:block>
+  </metal:css>
+
+  <body>
+    <metal:fill fill-slot="main">
+
+      <metal:main_macro define-macro="main"
+            tal:define="portal_type python:here.getPortalTypeName().lower().replace(' ', '_');
+            base_macros here/base/macros;
+            view_template python:'%s_view' % portal_type;
+            view_macros python:path('here/%s/macros|nothing' % view_template);
+            header_macro view_macros/header | header_macro | base_macros/header;
+            folderlisting_macro view_macros/folderlisting | folderlisting | base_macros/folderlisting;
+            footer_macro view_macros/footer | footer_macro | base_macros/footer;
+            errors python:request.get('errors', {})">
+            
+
+        <metal:use_header use-macro="header_macro" />
+        <table>
+        <tr>
+        <td>
+        
+
+	  
+        <p style="font-family:times;color:red;font-size:20px">Your internship's state: </p>
+        <p style="font-family:times;color:black;font-size:20px"><span tal:replace="python: context.plone_utils.getReviewStateTitleFor(context)">workflow state</span></p>
+        <p>&nbsp;</p>
+         
+ 
+        
+  <!--      context.portal_workflow.getInfoFor(context, 'review_state')"  to return the state id -->
+        
+        
+        <div id="boldMessage">
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'private'">
+        <h1>Student Instructions</h1>
+        <p>Your internship is not yet submitted. Please click the <b>Submit for Approval by College button</b> at the bottom of the page after you have thoroughly completed all fields.</p>
+        </span>
+        
+        
+        
+        
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'pendingCollegeApproval'">
+        <span tal:condition="python:member.has_role('Member')"> 
+        <h1>Student Instructions</h1>
+        <p>1.) Your internship has been submitted and is awaiting approval from the College of Business.</p>
+        <p>2.) You <b>will not</b> be able to edit your internship forms unless your internship is denied due to incorrect or missing information.</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        </span>
+        </span>
+        
+        
+        
+        
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'pendingCollegeApproval'">
+        <span tal:condition="python:member.has_role('InternshipDirector')"> 
+        <h1>College of Business Instructions</h1>
+        <p>&nbsp;</p>
+        <h3>To Approve the Internship</h3>
+        <p>1.) Click on the <b>Approve by College button</b>, which is located at the bottom of this page.</p>
+        <p>&nbsp;</p>
+        <h3>To Deny the Internship</h3>
+        <p>1.) Click on the <b>Internship Review button</b>, which is located at the bottom of this page.</p>
+        <p>2.) You will be redirected to the edit page.</p>
+        <p>3.) At the new site, select the appropriate reason(s) and click the <b>save button.</b></p>
+        <p>4.) You will then be brought back to this page (view page).</p>
+        <p>5.) Then click the <b>Deny by College button</b> at the bottom of this page.</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        </span>
+        </span>
+        
+        
+        
+        
+        
+                
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'deniedByCollege'">
+        <span tal:condition="python:member.has_role('Member')">   
+        <h1>Student Instructions</h1>
+        <p>Your internship has been denied by the College of Business.  If possible, please make the required changes.</p>
+        <p>&nbsp;</p>
+        <h3>To Make the Required Changes</h3>
+        <p>1.) Scroll down to the bottom of this page and click the <b>Make Changes button.</b></p>
+        <p>2.) You will be redirected to the edit page</p> 
+        <p>3.) When you are on the edit page and you are done making corrections, click the <b>save button</b> at the bottom of the page.</p>
+        <p>4.) You will be brought back to this page.</p>
+        <p>5.) Then click the <b>Submit Again for College Approval button</b> at the bottom of this page.</p>
+        <p>&nbsp;</p>
+        <h3>After the Submit Again for College Approval button is clicked</h3>
+        <p>1.) Your internship will return to the Pending College Approval state.</p>
+        <p>2.) The College of Business Internship Director will be notified via e-mail that your internship is ready for review again.</p>
+        </span>
+        </span>
+        
+        
+        
+        
+                
+        
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'pendingSupervisorApproval'">
+        <span tal:condition="python:member.has_role('Member')"> 
+        <h1>Student Instructions</h1>
+        <p>1.) Your internship has been approved by the College of Business and is awaiting supervisor approval.</p>
+        <p>2.) You <b>will not</b> be able to edit your internship forms unless your internship is denied due to incorrect or missing information.</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        </span>
+        </span>        
+        
+        
+        
+        
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'pendingSupervisorApproval'">
+        <span tal:condition="python:member.has_role('Supervisor')"> 
+        <h1>Supervisor Instructions</h1>
+        <p>&nbsp;</p>
+        <p style="font-size:20px"><b>Please review the student's information below for accuracy</b></p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <h3>To Approve the Internship</h3>
+        <p>1.) Click on the <b>Approve by Supervisor button</b>, which is located at the bottom of this page.</p>
+        <p>&nbsp;</p>
+        <h3>To Deny the Internship</h3>
+        <p>1.) Click on the <b>Internship Review button</b>, which located at the bottom of this page.</p>
+        <p>2.) You will be redirected to the edit page.</p>
+        <p>3.) At the new site, select the appropriate reason(s) and click the <b>save button.</b></p>
+        <p>4.) You will then be brought back to this page (view page).</p>
+        <p>5.) Then click the <b>Deny by Supervisor button</b> at the bottom of the page.</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        </span>
+        </span>
+        
+ 
+        
+        
+        
+        
+        
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'deniedBySupervisor'">
+        <span tal:condition="python:member.has_role('Member')"> 
+        <h1>Student Instructions</h1>
+        <p>Your internship has been denied by your supervisor.  If possible, please make the required changes.</p>
+        <p>&nbsp;</p>
+        <h3>To Make the Required Changes</h3>
+        <p>1.) Scroll down to the bottom of this page and click the <b>Make Changes button.</b></p>
+        <p>2.) You will be redirected to the edit page.</p> 
+        <p>3.) When you are on the edit page and you are done making corrections, click the <b>save button</b> at the bottom of the page.</p>
+        <p>4.) You will be brought back to this page.</p>
+        <p>5.) Then click the <b>Submit Again for Supervisor Approval button</b> at the bottom of this page.</p>
+        <p>&nbsp;</p>
+        <h3>After the Submit Again for Supervisor Approval button is clicked</h3>
+        <p>1.) Your internship will be sent to the College of Business Internship Director for re-approval.</p>
+        <p>&nbsp;</p>
+        <h3>After your internship is re-approved by the College of Business Internship Director</h3>
+        <p>1.) Your internship will return to the Pending Supervisor Approval state.</p>
+        <p>2.) Your supervisor will be alerted via email to review your internship again.</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        </span>
+        </span>
+        
+        
+        
+        
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'deniedBySupervisor'">
+        <span tal:condition="python:member.has_role('Supervisor')">         
+        <h1>Supervisor Instructions</h1>
+        <p>You will be alerted via e-mail if the student submits a corrected application.</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        </span>
+        </span>
+        
+        
+        
+        
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'pendingCollegeReapproval'">
+        <span tal:condition="python:member.has_role('Member')">
+        <h1>Student Instructions</h1>
+        <p>1.) The College of Business Internship Director must re-approve the changes you made because your internship was denied by your supervisor.</p>
+        <p>2.) At this time, you <b>will not</b> be able to edit your internship.</p>
+        <p>&nbsp;</p>
+        <h3>If the College of Business Internship Director approves your corrections</h3> 
+        <p>1.) Your internship will return to the Pending Supervisor Approval state.</p>
+        <p>2.) Your supervisor will be alerted via email to review your internship again.</p>
+        <p>&nbsp;</p>
+        <h3>If the College of Business Internship Director denies your corrections</h3>
+        <p>1.) Your internship will go to the Denied By College Re-Approval state.</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        </span>
+        </span>
+        
+        
+        
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'pendingCollegeReapproval'">
+        <span tal:condition="python:member.has_role('InternshipDirector')"> 
+        <h1>College of Business Instructions</h1>
+        <p>&nbsp;</p>
+        <h3>To Approve the Internship</h3>
+        <p>1.) Click on the <b>Approve and Send to Supervisor button</b>, which is located at the bottom of this page.</p>
+        <p>&nbsp;</p>
+        <h3>To Deny the Internship</h3>
+        <p>1.) Click on the <b>Internship Review button</b>, which is located at the bottom of this page.</p>
+        <p>2.) You will be redirected to the edit page.</p>
+        <p>3.) At the new site, select the appropriate reason(s) and click the <b>save button.</b></p>
+        <p>4.) You will then be brought back to this page (view page).</p>
+        <p>5.) Then click the <b>Deny by College button</b> at the bottom of this page.</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        </span>
+        </span>
+        
+        
+        
+        
+        
+        
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'deniedByCollegeReapproval'">
+        <span tal:condition="python:member.has_role('Member')">   
+        <h1>Student Instructions</h1>
+        <p>Your internship has been denied by the College of Business.  If possible, please make the required changes.</p>
+        <p>&nbsp;</p>
+        <h3>To Make the Required Changes</h3>
+        <p>1.) Scroll down to the bottom of this page and click the <b>Make Changes button.</b></p>
+        <p>2.) You will be redirected to the edit page</p> 
+        <p>3.) When you are on the edit page and you are done making corrections, click the <b>save button</b> at the bottom of the page.</p>
+        <p>4.) You will be brought back to this page.</p>
+        <p>5.) Then click the <b>Submit Again for College Re-Approval button</b> at the bottom of this page.</p>
+        <p>&nbsp;</p>
+        <h3>After the Submit Again for College Approval button is clicked</h3>
+        <p>1.) Your internship will return to the Pending College Re-Approval state.</p>
+        <p>2.) The College of Business Internship Director will be notified via e-mail that your internship is ready for review again.</p>
+        </span>
+        </span>
+        
+        
+       
+        
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'approved'">
+        <span tal:condition="python:member.has_role('Member')">
+        <h1>Student Instructions</h1>
+        <p>1.) Your internship has been approved by the College of Business and your supervisor.</p>
+        <p>2.) You will be enrolled in the proper internship class.</p>
+        <p>3.) Please refer to D2L (Desire to Learn) for completion requirements.</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        </span>
+        </span>
+        
+        
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'approved'">
+        <span tal:condition="python:member.has_role('Supervisor')">
+        <h1>Supervisor Instructions</h1>
+        <p>Thank you for assisting the College of Business and supporting your intern.</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        </span>
+        </span>
+        
+        
+        
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'revoked'">
+        <h1>Student Instructions</h1>
+        <p>Your internship has been <b>revoked</b> by the College of Business.</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        </span>
+        
+        
+     
+        </div>
+        </td>
+        <td>
+        </td>
+         </table>
+
+
+
+	 
+             
+        
+		<fieldset>
+		<legend><h1>Student Information</h1></legend>
+		<table border="1">
+		<tr><th class="viewHeaderFields">Student Name</th><td> <p tal:replace="here/studentName|nothing">Student Name</p></td></tr>
+		<tr rowspan="2"><th class="viewHeaderFields">Student Address (local address)</th><td> <p tal:replace="here/studentAddress|nothing">Student Address</p><p><span tal:replace="here/studentCity"></span>, <span tal:replace="here/studentState|nothing"></span> <span tal:replace="here/studentZip|nothing"></span></p></td></tr>
+		<tr><th class="viewHeaderFields">Student Major</th><td> <p tal:define="theList here/studentDeclareMajor; theString python:', '.join(theList[0:-1])" tal:replace="theString">[theString]>Student Major</p></td></tr>
+		<tr><th class="viewHeaderFields">Student E-Mail</th><td> <p tal:replace="here/studentEmail|nothing">Student E-Mail</p></td></tr>
+		<tr><th class="viewHeaderFields">Student Phone Number</th><td> <p tal:replace="here/studentPhoneNumber|nothing">Student Phone Number</p></td></tr>
+		<tr><th class="viewHeaderFields">Student ID</th><td> <p tal:replace="here/studentID|nothing">Student ID</p></td></tr>
+		<tr><th class="viewHeaderFields">Student Estimated Graduation Date</th><td><p tal:replace="here/studentGraduationSemester|nothing"></p>, <span tal:replace="here/studentGraduationYear|nothing"></span></td></tr>
+		<tr><th class="viewHeaderFields">Student COB Admission Semester</th><td><p tal:replace="here/studentCOBSemester|nothing"></p>, <span tal:replace="here/studentCOBYear|nothing"></span></td></tr>
+		<tr><th class="viewHeaderFields">Student Business 384 Enrollment Semester</th><td><p tal:replace="here/student384Semester|nothing"></p>, <span tal:replace="here/student384Year|nothing"></span></td></tr>		
+		</table>
+		</fieldset>
+
+		<fieldset>
+		<legend><h1>Internship Site Information</h1></legend>
+		<table border="1">
+		<tr><th class="viewHeaderFields">Organization Name</th><td> <p tal:replace="here/organizationName|nothing">Organization Name</p></td></tr>
+		<tr rowspan="2"><th class="viewHeaderFields">Organization Address</th><td> <p tal:replace="here/organizationAddress|nothing">Organization Address</p><p><span tal:replace="here/organizationCity|nothing"></span>, <span tal:replace="here/organizationState|nothing"></span> <span tal:replace="here/organizationZip|nothing"></span></p></td></tr>
+		<tr><th class="viewHeaderFields">Organization Phone Number</th><td> <p tal:replace="here/organizationPhoneNumber|nothing">Organization Phone Number</p></td></tr>
+
+		</table>
+		</fieldset>
+		
+		<fieldset>
+		<legend><h1>Internship Information</h1></legend>
+		<table border="1">
+		<tr><th class="viewHeaderFields">Pay Rate</th><td><p tal:replace="here/payRate|nothing">Pay Rate</p></td></tr>
+		<tr><th class="viewHeaderFields">Start Date</th><td><p tal:replace="here/startDate|nothing">Start Date</p></td></tr>
+		<tr><th class="viewHeaderFields">End Date</th><td><p tal:replace="here/completionDate|nothing">End Date</p></td></tr>
+		<tr><th class="viewHeaderFields">Semester of Enrollment</th><td><span tal:replace="here/semesterToEnroll|nothing">Semester</span>, <span tal:replace="here/yearToEnroll|nothing"> Year </span></td></tr>
+		<tr><th class="viewHeaderFields">Credit Option</th><td><p tal:replace="here/creditOption|nothing">Credit Option</p></td></tr>
+		
+		
+		</table>
+		</fieldset>
+
+		<fieldset>
+		<legend><h1>Supervisor Information</h1></legend>
+		<table border="1">
+		<tr><th class="viewHeaderFields">Supervisor Name</th><td> <p tal:replace="here/supervisorFirstName|nothing"></p> <p tal:replace="here/supervisorLastName|nothing"></p></td></tr>
+		<tr><th class="viewHeaderFields">Supervisor Job Title</th><td> <p tal:replace="here/supervisorJobTitle|nothing">Supervisor Job Title</p></td></tr>
+		<tr><th class="viewHeaderFields">Supervisor E-Mail</th><td> <p tal:replace="here/supervisorEmail|nothing">Supervisor E-Mail</p></td></tr>
+		<tr><th class="viewHeaderFields">Supervisor Phone Number</th><td> <p tal:replace="here/supervisorPhoneNumber|nothing">Supervisor Phone Number</p></td></tr>
+
+		</table>
+		</fieldset>
+
+		<fieldset>
+		<legend><h1>Position Description</h1></legend>
+		<table border ="1">
+		<tr><th class="viewHeaderFields">Student Job
+		Title</th><td><p
+		tal:replace="here/studentJobPosition|nothing">Student
+		Job Title</p></td></tr>
+
+		
+		<tr>
+		  <th class="viewHeaderFields">Please provide a position description, detailing the main roles/responsibilities of your internship?</th>
+		      <td>
+			<p tal:replace="here/positionDescriptionQuestion1|nothing">The major roles/responsibilities of your internship</p>
+		      </td>
+		    </tr>
+
+		<tr>
+		  <th class="viewHeaderFields">How does this position relate to your major and career goals?</th>
+		  <td>
+		    <p tal:replace="here/positionDescriptionQuestion5|nothing">The skills that you will gain in relation to your major and career goals</p>
+		  </td>
+		</tr>
+		
+		<tr>
+		  <th class="viewHeaderFields">What business skills and knowledge are essential for this position?</th>
+		<td>
+		  <p
+		  tal:replace="here/positionDescriptionQuestion2|nothing">The business skills and knowledge that are essential for this position</p>
+		</td>
+	      </tr>
+		
+		<tr>
+		  <th class="viewHeaderFields">What advanced coursework or specific College of Business courses will you use in this position?</th>
+		<td>
+		  <p
+		  tal:replace="here/positionDescriptionQuestion3|nothing">The advanced coursework required for this position</p>
+		</td>
+	       </tr>
+		
+		<tr>
+		  <th class="viewHeaderFields">What will you learn or experience from this internship that you haven't had the opportunity to learn or experience yet?</th>
+		<td>
+		  <p tal:replace="here/positionDescriptionQuestion4|nothing">The learning or experiences from this internship that you haven't had the opportunity to learn or experience yet</p>
+		</td>
+	       </tr>
+		
+
+		
+
+	      </table>
+		</fieldset>
+
+
+		<span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'pendingCollegeApproval'">
+		<span tal:condition="python:member.has_role('InternshipDirector')">
+		<p>&nbsp;</p>
+	    <h1>Important</h1>
+	    <p>Remember that clicking the <b>Deny by College button</b> will deny the internship <b>without a reason.</b></p>
+	    <p>To select a reason for denying the internship, please click the <b>Internship Review button</b> first.</p>
+	    <p>&nbsp;</p>
+		</span>
+		</span>
+
+
+
+	<span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'pendingSupervisorApproval'">
+	<span tal:condition="python: member.has_role('Supervisor')">
+        <p>&nbsp;</p>	    
+	    <h1>Important</h1>
+	    <p>Remember that clicking the <b>Deny by Supervisor button</b> will deny the internship <b>without a reason.</b></p>
+	    <p>To select a reason for denying the internship, please click the <b>Internship Review button</b> first.</p>
+        <p>&nbsp;</p>	    
+		</span>
+		</span>
+
+
+
+        <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'pendingCollegeReapproval'">
+	    <span tal:condition="python:member.has_role('InternshipDirector')">
+        <p>&nbsp;</p>	    
+	    <h1>Important</h1>
+	    <p>Remember that clicking the <b>Deny by College button</b> will deny the internship <b>without a reason.</b></p>
+	    <p>To select a reason for denying the internship, please click the <b>Internship Review button</b> first.</p>
+        <p>&nbsp;</p>	    
+	  	</span>
+		</span>
+
+
+
+
+
+
+
+
+
+
+		<div class="COBAbuttons"> 
+		
+		
+		<!-- Please note that an internship director is also a member and a supervisor, so an internship director can view everything -->
+
+		
+		<span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'private'">
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=submit'">Submit for Approval by College</a>
+     	<a tal:attributes="href python:context.absolute_url() + '/edit'">Make Changes</a>
+		</span>
+		
+		
+		<span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'private'">
+		<span tal:condition="python:member.has_role('InternshipDirector')">
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=archiveInternship'">Archive the Internship</a>
+		</span>
+		</span>
+				
+		
+		
+	
+		
+		
+		<span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'pendingCollegeApproval'">
+		<span tal:condition="python:member.has_role('InternshipDirector')">
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=submitFromPendingCollegeApproval'">Approve by College</a>
+		<a tal:attributes="href python:context.absolute_url() + '/edit'">Internship Review</a>
+	    <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=denyFromPendingCollegeApproval'">Deny by College</a>
+	    <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=revokeInternship'">Revoke Internship</a>
+	    <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=archiveInternship'">Archive the Internship</a>
+	    <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendToShortcut'">Send to Shortcut State</a>
+		</span>
+		</span>
+		
+		
+		
+		
+		
+		<span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'deniedByCollege'">
+		<span tal:condition="python:member.has_role('Member')">
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=submitFromDeniedByCollege'">Submit Again for College Approval</a>
+		<a tal:attributes="href python:context.absolute_url() + '/edit'">Make Changes</a>
+		</span>
+		</span>
+		
+	    <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'deniedByCollege'">
+		<span tal:condition="python:member.has_role('InternshipDirector')">
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=revokeInternship'">Revoke Internship</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=archiveInternship'">Archive the Internship</a>
+		</span>
+		</span>
+
+		
+
+
+
+		
+		<span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'pendingSupervisorApproval'">
+	    <span tal:condition="python:member.has_role('Supervisor')">
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=submitFromPendingSupervisorApproval'">Approve by Supervisor</a>
+		<a tal:attributes="href python:context.absolute_url() + '/edit'">Internship Review</a>
+	    <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=denyFromPendingSupervisorApproval'">Deny by Supervisor</a>
+	  	</span>
+		</span>
+	    
+	    
+	    
+	    
+	    <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'pendingSupervisorApproval'">
+	    <span tal:condition="python:member.has_role('InternshipDirector')">
+	    <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=emailToSupervisorFromPendingSupervisorApproval'">Send Notification Email to Supervisor</a>
+	    <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=revokeInternship'">Revoke Internship</a>
+	    <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=archiveInternship'">Archive the Internship</a>
+		</span>
+		</span>
+		
+				
+
+
+		<span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'deniedBySupervisor'">
+		<span tal:condition="python:member.has_role('Member')">
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=submitFromDeniedBySupervisor'">Submit Again for Approval</a>
+	    <a tal:attributes="href python:context.absolute_url() + '/edit'">Make Changes</a>
+		</span>
+		</span>
+		
+		
+	    <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'deniedBySupervisor'">
+		<span tal:condition="python:member.has_role('InternshipDirector')">
+        <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=revokeInternship'">Revoke Internship</a>
+        <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=archiveInternship'">Archive the Internship</a>
+		</span>
+		</span>
+		
+		
+		
+		<span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'pendingCollegeReapproval'">
+		<span tal:condition="python:member.has_role('InternshipDirector')">
+        <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=backToPendingSupervisorApproval'">Re-Approve and Send to Supervisor</a>
+		<a tal:attributes="href python:context.absolute_url() + '/edit'">Internship Review</a>
+	    <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=denyFromPendingCollegeRepproval'">Deny by College</a>
+	    <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=archiveInternship'">Archive the Internship</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=revokeInternship'">Revoke Internship</a>
+		</span>
+	    </span>
+	
+	
+		
+	    <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'deniedByCollegeReapproval'">
+		<span tal:condition="python:member.has_role('Member')">
+        <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=submitFromDeniedByCollegeReapproval'">Submit Again for College Re-Approval</a>
+		<a tal:attributes="href python:context.absolute_url() + '/edit'">Make Changes</a>
+		</span>
+	    </span>
+
+
+	    <span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'deniedByCollegeReapproval'">
+		<span tal:condition="python:member.has_role('InternshipDirector')">
+	    <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=revokeInternship'">Revoke Internship</a>
+	    <a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=archiveInternship'">Archive the Internship</a>
+		</span>
+	    </span>
+
+		
+
+
+		<span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'approved'">
+		<span tal:condition="python:member.has_role('InternshipDirector')">
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=revokeInternship'">Revoke Internship</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=archiveInternship'">Archive the Internship</a>
+		</span>
+		</span>
+		
+		
+		
+		
+		<span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'revoked'">
+		<span tal:condition="python:member.has_role('InternshipDirector')">
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToPrivate'">Back to Private</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToPendingCollegeApproval'">Back to Pending College</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToDeniedByCollege'">Back to Denied By College</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToPendingSupervisorApproval'">Back to Pending Supervisor</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToDeniedBySupervisor'">Back to Denied By Supervisor</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToApproved'">Back to Approved</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=archiveInternship'">Archive the Internship</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToPendingCollegeReapproval'">Back to Pending College Re-Approval</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToDeniedByCollegeReapproval'">Back to Denied By College Re-Approval</a>	
+		</span>
+		</span>
+		
+		
+		
+		
+		
+		
+		<span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'archived'">
+		<span tal:condition="python:member.has_role('InternshipDirector')">
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToPrivate'">Back to Private</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToPendingCollegeApproval'">Back to Pending College</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToDeniedByCollege'">Back to Denied By College</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToPendingSupervisorApproval'">Back to Pending Supervisor</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToDeniedBySupervisor'">Back to Denied By Supervisor</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToApproved'">Back to Approved</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToRevoked'">Back to Revoked</a>		
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToPendingCollegeReapproval'">Back to Pending College Re-Approval</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToDeniedByCollegeReapproval'">Back to Denied By College Re-Approval</a>
+		</span>
+		</span>
+		
+		
+
+		
+
+		<span tal:condition="python: context.portal_workflow.getInfoFor(context, 'review_state') == 'shortcut'">
+		<span tal:condition="python:member.has_role('InternshipDirector')">
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=sendBackToPendingCollegeApproval'">Back to Pending College</a>
+		<a tal:attributes="href python:context.absolute_url() + '/content_status_modify?workflow_action=submitFromPendingSupervisorApproval'">Fully Approve Internship</a>
+		</span>
+		</span>
+		
+		</div>
+		
+		
+
+
+        <metal:use_body use-macro="folderlisting_macro" />
+        <metal:use_footer use-macro="footer_macro" />
+      </metal:main_macro>
+    </metal:fill>
+  </body>
+</html>

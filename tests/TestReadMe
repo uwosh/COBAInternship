@@ -1,0 +1,11 @@
+To run the tests:
+
+open up COBAInternship/profiles/default/types/COBAInternship.xml
+change global_allow to True
+
+
+open up a terminal
+cd to zinstance
+./bin/instance test -s Products.COBAInternship
+
+after the test, change the global_allow value back to False

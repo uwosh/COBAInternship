@@ -1,0 +1,271 @@
+#top_level_navigation {
+  margin-top:-30px;
+}
+
+#mainImage .img { 
+height:100px;
+}
+
+#portal-globalnav {
+font-size:18px !important;
+padding:10px !important;
+}
+
+#audienceNav {
+display:none;
+}
+
+#collegeViewlet {
+margin: 10px !important;
+}
+
+#portal-top {
+background-color:white;
+}
+
+#portal-personaltools {
+background-color:transparent;
+font-size:125%;
+}
+
+.COBAbuttons ul
+{
+    float:left;
+    padding:0;
+    margin:0;
+    list-style-type:none;
+    display:inline;
+}
+
+.COBAbuttons a
+{
+    float:left;
+    width:18em;
+    text-decoration:none;
+ 
+    padding:0.2em 0.8em;
+    border-style:ridge;
+
+    font-size:medium;
+    font-family:arial;
+    color:black !important;
+    background-color:white !important;
+}
+
+.COBAbuttons a:hover
+{
+    color:black !important;
+    background-color:gold !important;
+}
+
+.COBAHomePage ul
+{
+    float:none;
+    padding:0;
+    margin:0;
+    list-style-type:none;
+    display:inline;
+}    
+       
+.COBAHomePage a
+{
+    float:left;
+    width:18em;
+    text-decoration:none;
+ 
+    padding:0.2em 0.8em;
+    border-style:ridge;
+
+    font-size:medium;
+    font-family:arial;
+    color:black;
+    background-color:gold;
+}    
+    
+.COBAHomePage a:hover
+{
+    color:gold;
+    background-color:black;
+}    
+    
+.COBAFrontPage ul
+{
+    background-image: none;
+    float:none;
+    padding:0;
+    margin:0;
+    list-style-type:none;
+    display:inline;
+}    
+      
+.COBAFrontPage a
+{
+	background-image: none;
+    float:none;
+    width:18em;
+    text-decoration:none;
+    padding:0.2em 0.8em;
+    border-style:ridge;
+    font-size:medium;
+    font-family:arial;
+    color:black;
+    background-color:gold;
+}    
+ 
+.COBAFrontPage a:hover
+{
+    background-image: none;
+    color:gold;
+    background-color:black;
+}   
+
+.COBAErrorButtons ul
+{
+    float:left;
+    padding:0;
+    margin:0;
+    list-style-type:none;
+    display:inline;
+}
+
+.COBAErrorButtons a
+{
+    float:left;
+    width:18em;
+    text-decoration:none;
+ 
+    padding:0.2em 0.8em;
+    border-style:ridge;
+
+    font-size:medium;
+    font-family:arial;
+    color:gold !important;
+    background-color:black !important;
+}
+
+.COBAErrorButtons a:hover
+{
+    color:black !important;
+    background-color:gold !important;
+}
+
+
+
+h1
+{
+    font-family:arial;
+}
+
+h4
+{
+    font-family:arial;
+}
+
+h3 {
+    font-size: 130%;
+    border-bottom: none;
+    font-weight: bold;
+    font-family:arial;
+}
+
+.formPanel {
+    padding: 1em 1em 1em 1em; 
+    border: none;
+}
+
+li.formTab {
+    display: none;
+    margin: 0;
+    padding: 0;
+}
+
+.viewHeaderFields
+{
+    color:black;
+    background-color:gold;
+    text-align:left;
+}
+
+#portal-globalnav {
+    background-color: #5aa3c3;
+    padding: 0em 0em 0em 1em;
+    white-space: nowrap;
+    list-style: none;
+    margin: 0;
+    font-size: 20px;
+    height: auto;
+    line-height: normal;
+    border-style: none none none solid;
+    padding-top:30px;
+    padding-bottom:30px;
+    padding-left:10px;
+    border:10px solid white;
+}
+
+#portal-globalnav li {
+    display: inline;
+    font-size:18px !important;
+}
+
+#portal-globalnav li a {
+    /* The normal, unselected tabs. They are all links */
+    background-color: transparent;
+    border-color: black;
+    border-width: 2px;
+    border-style: none none none solid;
+    color: black;
+    height: auto;
+    margin-right: 0.5em;
+    padding: 0em 1.25em;
+    text-decoration: none;
+    text-transform: none;
+    font-size: auto;
+}
+
+#portal-globalnav li.selected a {
+    /* The selected tab. There's only one of this */
+    background-color: black;
+    border: 1px none black;
+    border-bottom: #5aa3c3 1px none;
+    color: white;
+    border-style: none none none solid;
+    padding-top: 2px !important;
+}
+
+#portal-globalnav li a:hover {
+    background-color: white;
+    border-color: #5aa3c3;
+    border-bottom-color: #5aa3c3;
+    color: #5aa3c3;
+    padding-top: 2px !important;
+}
+
+
+
+#portal-personaltools {
+background-color:transparent;
+border-bottom:1px solid transparent;
+border-top:1px solid transparent;
+color:Black;
+line-height:1.6em;
+list-style-image:none;
+list-style-position:outside;
+list-style-type:none;
+margin:0;
+padding:0 3em 0 10px;
+text-align:right;
+text-transform:lowercase;
+}
+
+#portal-column-one .visualPadding {
+left:-26px;
+top:-35px !important;
+}
+
+
+#content a {
+background-image:none !important;
+padding:2px !important;
+}
+
+

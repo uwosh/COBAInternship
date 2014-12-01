@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<object name="portal_actions" meta_type="Plone Actions Tool"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <action-provider name="portal_workflow"/>
+ <action-provider name="portal_actions">
+ <action-provider name="portal_types"/>
+ 
+ 
+  <action title="RSS feed of this listing" action_id="rss"
+     category="document_actions"
+     condition_expr="python:portal.portal_syndication.isSyndicationAllowed(object)"
+     url_expr="string:$object_url/RSS" visible="True">
+   <permission>View</permission>
+  </action>
+ 
+
+  <action title="Home" action_id="index_html" category="portal_tabs"
+     condition_expr=""
+     url_expr="string:${globals_view/navigationRootUrl}"
+     visible="True">
+   <permission>View</permission>
+  </action>
+ 
+
+<!-- An internship director is also a member and the internship director doesn't need to see this tab -->
+  <action title="Your Application(s)" action_id="your-applications"
+     category="portal_tabs"
+     condition_expr="python:member and member.has_role(['Member']) and not member.has_role(['InternshipDirector'])"
+     url_expr="string:$portal_url/internship-applications-folder" visible="True">
+   <permission>View</permission>
+  </action>
+  
+  <action title="All Applications" action_id="all-applications"
+     category="portal_tabs"
+     condition_expr="python:member and member.has_role(['InternshipDirector', 'Manager', 'Enrollment'])"
+     url_expr="string:$portal_url/internship-applications-folder/folder_contents" visible="True">
+   <permission>View</permission>
+  </action>
+  
+<!-- An internship director is a supervisor, and the internship director doesn't need to see this tab -->
+  <action title="Supervisor Applications" action_id="supervisor-applications"
+     category="portal_tabs"
+     condition_expr="python:member and member.has_role(['Supervisor']) and not member.has_role(['InternshipDirector'])"
+     url_expr="string:$portal_url/internship-applications-folder/folder_contents" visible="True">
+   <permission>View</permission>
+  </action>
+ 
+
+
+
+ </action-provider>
+ <action-provider name="portal_syndication">
+  <action title="Syndication" action_id="syndication" category="object"
+     condition_expr="python:folder is object and portal.portal_syndication.isSiteSyndicationAllowed()"
+     url_expr="string:${folder_url}/synPropertiesForm" visible="False">
+   <permission>Manage properties</permission>
+  </action>
+ </action-provider>
+
+
+ <action-provider name="portal_properties">
+  <action title="Reconfigure Portal" action_id="configPortal"
+     category="global" condition_expr=""
+     url_expr="string:${portal_url}/reconfig_form" visible="False">
+   <permission>Manage portal</permission>
+  </action>
+ </action-provider>
+ <action-provider name="portal_types"/>
+ 
+
+
+
+
+
+
+ <object name="portal_tabs" meta_type="CMF Action Category">
+  <property name="title"></property>
+  
+  <object name="add_cobainternship" meta_type="CMF Action">
+   <property name="title">Add College of Business Internship</property>
+   <property name="description"></property>
+   <property name="url_expr">string:${here/portal_url}/internship-applications-folder/createObject?type_name=COBAInternship</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr">python:member and member.has_role(['Member', 'Manager' ])</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+ </object>
+ 
+ 
+</object>
+
+
+
+
+
+
+

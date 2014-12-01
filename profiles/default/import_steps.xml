@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<import-steps>
+
+ 
+ <import-step 
+    id="COBAInternship-Update-RoleMappings" 
+    handler="Products.COBAInternship.setuphandlers.updateRoleMappings"
+    title="Update Workflow role mappings for COBAInternship"
+    version="2008-11-25T10:22:45.339561">
+   <dependency step="COBAInternship-QI-dependencies"/>
+   updates the workflow role mappings for COBAInternship
+ </import-step>
+
+ <import-step 
+    id="COBAInternship-postInstall" 
+    handler="Products.COBAInternship.setuphandlers.postInstall"
+    title="manual coded post-install for COBAInternship"
+    version="2008-11-25T10:22:45.339561">
+   <dependency step="COBAInternship-QI-dependencies"/>
+   manual coded post-install for COBAInternship
+ </import-step>
+
+<!-- ##code-section ADDITIONALSTEPS -->
+<!-- ##/code-section ADDITIONALSTEPS --> 
+
+</import-steps>
+ 
